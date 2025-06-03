@@ -1,0 +1,100 @@
+<!-- Navbar -->
+<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200">
+  <div class="px-3 py-3 lg:px-5 lg:pl-3">
+    <div class="flex items-center justify-between">
+      <!-- Left side -->
+      <div class="flex items-center justify-start rtl:justify-end">
+        <!-- Sidebar toggle -->
+        <button 
+          id="mobile-menu-button"
+          type="button"
+          data-drawer-target="logo-sidebar"
+          data-drawer-toggle="logo-sidebar"
+          aria-controls="logo-sidebar"
+          class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200"
+        >
+          <span class="sr-only">Open sidebar</span>
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"/>
+          </svg>
+        </button>
+        <!-- Logo -->
+        <span class="self-center text-xl font-bold text-blue-600 whitespace-nowrap">Waay pa logo</span>
+      </div>                                                                                                                                          
+
+      <!-- Right side -->
+      <div class="flex items-center">
+        <div class="relative flex items-center ml-3">
+          <!-- User Menu Button -->
+          <button class="flex text-sm bg-red-200 rounded-full focus:ring-4 focus:ring-gray-300">
+            <span class="sr-only">Open user menu</span>
+            <img class="w-8 h-8 rounded-full" src="https://i.pravatar.cc/32" alt="user photo">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 min-h-screen bg-white border-r border-gray-200 transition-transform transform -translate-x-full sm:translate-x-0" aria-label="Sidebar" style="margin-top: 64px;">
+  <div class="flex flex-col h-full">
+    <!-- Navigation Links -->
+    <ul class="space-y-2 font-medium flex-grow">
+      <li>
+        <a href="#" class="flex items-center p-2 text-gray-700 bg-gray-100 rounded-md hover:bg-blue-200 hover:text-blue-600">
+          <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 4v6m0 0h6m-6 0H7"></path>
+          </svg>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'shift_list' %}" class="flex items-center p-2 text-gray-700 rounded-md hover:bg-blue-200 hover:text-blue-600">
+          <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m6-4a4 4 0 11-8 0 4 4 0 018 0zm6 4a4 4 0 00-3-3.87"></path>
+          </svg>
+          Shifts
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'user_list' %}" class="flex items-center p-2 text-gray-700 rounded-md hover:bg-blue-200 hover:text-blue-600">
+          <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A7 7 0 0112 15a7 7 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+          Employees
+        </a>
+      </li>
+
+      <li>
+        <a href="#" class="flex items-center p-2 text-gray-700 rounded-md hover:bg-blue-200 hover:text-blue-600">
+          <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v4a1 1 0 001 1h3v3a1 1 0 001 1h4m0 0h3a1 1 0 001-1v-3h3a1 1 0 001-1V7m-5 4h-4v4h4v-4z"></path>
+          </svg>
+            Request Leave
+        </a>
+      </li>
+
+      <li>
+        <a href="#" class="flex items-center p-2 text-gray-700 rounded-md hover:bg-blue-200 hover:text-blue-600">
+          <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v4a1 1 0 001 1h3v3a1 1 0 001 1h4m0 0h3a1 1 0 001-1v-3h3a1 1 0 001-1V7m-5 4h-4v4h4v-4z"></path>
+          </svg>
+          Extra lng anay
+        </a>
+      </li>
+    </ul>
+    <!-- Log Out Button -->
+    <div class="p-4 border-t border-gray-200">
+      <a href="{% url 'logout' %}" class="flex items-center p-2 text-white bg-red-500 rounded-md hover:bg-red-600">
+        <svg class="w-5 h-5 mr-3 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 9v6m5-3H3m13 0l-3-3m3 3l-3 3"></path>
+        </svg>
+        Log Out
+      </a>
+    </div>
+  </div>
+</aside>
+
+<!-- Sidebar Overlay -->
+<div id="sidebar-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden sm:hidden"></div>

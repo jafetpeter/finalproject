@@ -1,0 +1,86 @@
+<!-- filepath: /c:/xampp/htdocs/finalproject/crud/templates/shift/shift_list.html -->
+{% extends "layout/base.html" %}
+
+{% block 'title' %}
+Shift List
+{% endblock 'title' %}
+
+{% block 'content' %}
+
+<div class="flex min-h-screen bg-gray-50 text-sm">
+  <!-- Include Sidebar -->
+  {% include "include/sidebar.html" %}
+
+  <!-- Main Content -->
+  <div class="flex-1 p-6 bg-gray-200 transition-all duration-300 sm:ml-64" style="margin-top: 64px;">
+    <div class="mt-6">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Shifts</h1>
+        <a href="{% url 'shift_create' %}" class="inline-flex items-center px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded hover:bg-blue-600 shadow">
+          + Add Shift
+        </a>
+      </div>
+
+      <!-- Live Search Bar -->
+      <input type="text" id="searchInput" placeholder="Search..." 
+             class="border border-gray-300 rounded-lg px-4 py-2 w-full mb-6">
+
+      <div class="overflow-x-auto">
+        <table class="w-full bg-white border border-gray-200 shadow rounded-lg" id="shiftTable">
+          <thead class="bg-gray-100 text-gray-800 text-sm font-semibold">
+            <tr>
+                <th class="px-6 py-3 text-left">#</th>
+                <th class="px-6 py-3 text-left">Time In</th>
+                <th class="px-6 py-3 text-left">Time Out</th>
+                <th class="px-6 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="text-sm text-gray-700">
+            {% for shift in shifts %}
+            <tr class="border-b border-gray-200 hover:bg-gray-50">
+                <td class="px-6 py-4 text-left">{{ forloop.counter }}</td>
+                <td class="px-6 py-4 text-left">{{ shift.time_in }}</td>
+                <td class="px-6 py-4 text-left">{{ shift.time_out }}</td>
+                <td class="px-6 py-4 text-right">
+                    <a href="{% url 'shift_update' shift.shift_id %}" class="text-blue-500 hover:underline mr-3">Edit</a>
+                    <a href="{% url 'shift_delete' shift.shift_id %}" class="text-red-500 hover:underline">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="px-6 py-4 text-center text-gray-400">No shifts found.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <!-- Pagination Controls -->
+        <div class="mt-4">
+          {% if shifts.has_previous %}
+          <a href="?page={{ shifts.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="px-4 py-2 bg-gray-200 rounded-lg">Previous</a>
+          {% endif %}
+          <span class="px-4 py-2">{{ shifts.number }} of {{ shifts.paginator.num_pages }}</span>
+          {% if shifts.has_next %}
+          <a href="?page={{ shifts.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="px-4 py-2 bg-gray-200 rounded-lg">Next</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // JavaScript for Live Search
+  document.getElementById('searchInput').addEventListener('keyup', function() {
+    const searchValue = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#shiftTable tbody tr');
+
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' ');
+      row.style.display = rowText.includes(searchValue) ? '' : 'none';
+    });
+  });
+</script>
+
+{% endblock 'content' %}

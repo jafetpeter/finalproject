@@ -1,0 +1,41 @@
+<!-- filepath: /c:/xampp/htdocs/finalproject/crud/templates/shift/shift_form.html -->
+{% extends "layout/base.html" %}
+
+{% block 'title' %} {{ title }} {% endblock 'title' %}
+
+{% block 'content' %}
+<div class="flex min-h-screen bg-gray-50 text-sm">
+  {% include "include/sidebar.html" %}
+  <div class="flex-1 p-6 bg-gray-200 transition-all duration-300 sm:ml-64" style="margin-top: 64px;">
+    <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-semibold text-gray-700 mb-4">{{ title }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Time In -->
+            <div class="mb-4">
+                <label for="id_time_in" class="block text-sm font-medium text-gray-700">Time In</label>
+                {{ form.time_in }}
+                {% for error in form.time_in.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Time Out -->
+            <div class="mb-4">
+                <label for="id_time_out" class="block text-sm font-medium text-gray-700">Time Out</label>
+                {{ form.time_out }}
+                {% for error in form.time_out.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex items-center justify-end">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Save</button>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
