@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import logout
 from .models import Users, Shifts
-from .forms import UserForm, ShiftForm, ChangePasswordForm
+from .forms import UserForm, ShiftForm, ChangePasswordForm, EditUserForm
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -75,7 +75,7 @@ def user_create(request):
 
 def user_update(request, pk):
     user = get_object_or_404(Users, pk=pk)  # Fetch the user by primary key
-    form = UserForm(request.POST or None, instance=user)  # Bind the form to the user instance
+    form = EditUserForm(request.POST or None, instance=user)  # Bind the form to the user instance
     if request.method == 'POST':  # Check if the request is a POST (form submission)
         if form.is_valid():  # Validate the form data
             user = form.save(commit=False)  # Save the form data but don't commit to the database yet
