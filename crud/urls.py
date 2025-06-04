@@ -15,4 +15,6 @@ urlpatterns = [
     path('shifts/edit/<int:pk>/', views.shift_update, name='shift_update'),
     path('shifts/delete/<int:pk>/', views.shift_delete, name='shift_delete'),
     
+    path('dashboard/', views.dashboard, name='dashboard'),
+    
 ]

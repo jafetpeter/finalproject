@@ -1,0 +1,79 @@
+{% extends "layout/base.html" %}
+
+{% block 'title' %}
+Dashboard
+{% endblock 'title' %}
+
+{% block 'content' %}
+
+<div class="flex min-h-screen bg-gray-50 text-sm">
+  <!-- Include Sidebar -->
+  {% include "include/sidebar.html" %}
+
+  <!-- Main Content -->
+  <div class="flex-1 p-8 bg-gray-100 transition-all duration-300 sm:ml-64">
+    <div class="space-y-8">
+      <!-- Header -->
+      <div class="flex items-center justify-between">
+        <h1 class="text-3xl font-semibold text-gray-800">Dashboard</h1>
+        <button class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700">
+          Refresh Data
+        </button>
+      </div>
+
+      <!-- Overview Section -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h2 class="text-sm font-medium text-gray-600">Total Shifts</h2>
+          <p class="mt-2 text-4xl font-bold text-gray-800">3</p>
+        </div>
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h2 class="text-sm font-medium text-gray-600">Active Employees</h2>
+          <p class="mt-2 text-4xl font-bold text-gray-800">5</p>
+        </div>
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h2 class="text-sm font-medium text-gray-600">Pending Leave Requests</h2>
+          <p class="mt-2 text-4xl font-bold text-gray-800">4</p>
+        </div>
+      </div>
+
+      <!-- Metrics Section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h2 class="text-sm font-medium text-gray-600">Average Shift Duration</h2>
+          <p class="mt-2 text-4xl font-bold text-gray-800">8 hrs</p>
+        </div>
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h2 class="text-sm font-medium text-gray-600">Attendance Rate</h2>
+          <p class="mt-2 text-4xl font-bold text-gray-800">95%</p>
+        </div>
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h2 class="text-sm font-medium text-gray-600">Leave Approval Rate</h2>
+          <p class="mt-2 text-4xl font-bold text-gray-800">85%</p>
+        </div>
+      </div>
+
+      <!-- Recent Activity Section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h2 class="text-lg font-semibold text-gray-800">Recent Shifts</h2>
+          <ul class="mt-4 space-y-2 text-gray-600">
+            <li>Shift 1: 9:00 AM - 5:00 PM</li>
+            <li>Shift 2: 10:00 AM - 6:00 PM</li>
+            <li>Shift 3: 11:00 AM - 7:00 PM</li>
+          </ul>
+        </div>
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h2 class="text-lg font-semibold text-gray-800">Notifications</h2>
+          <ul class="mt-4 space-y-2 text-gray-600">
+            <li>Leave request from John Doe</li>
+            <li>Shift update for Jane Smith</li>
+            <li>New employee added: Alice Johnson</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock 'content' %}

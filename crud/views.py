@@ -7,6 +7,9 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.core.paginator import Paginator
 from django.db.models import Q
 
+def dashboard(request):
+    return render(request, 'dashboard/dashboard.html')
+
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')  # Matches the `name` attribute in login.html
