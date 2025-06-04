@@ -61,7 +61,17 @@ class EditUserForm(forms.ModelForm):
         label="Shift",
         widget=forms.Select(attrs={'class': 'form-select'})  # Render as a dropdown
     )
-
     class Meta:
         model = Users
         fields = ['full_name', 'gender', 'contact_number', 'email', 'username', 'shift']  # Exclude password fields
+        
+from .models import Attendance
+
+class AttendanceForm(forms.ModelForm):
+    class Meta:
+        model = Attendance
+        fields = ['user', 'shift', 'time_in', 'time_out', 'status']
+        widgets = {
+            'time_in': forms.TimeInput(attrs={'type': 'time'}),
+            'time_out': forms.TimeInput(attrs={'type': 'time'}), 
+        }

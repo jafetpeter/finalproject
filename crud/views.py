@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import logout
-from .models import Users, Shifts
-from .forms import UserForm, ShiftForm, ChangePasswordForm, EditUserForm
+from .models import Users, Shifts, Attendance
+from .forms import UserForm, ShiftForm, ChangePasswordForm, EditUserForm, AttendanceForm
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -28,7 +28,7 @@ def user_login(request):
                 print("Password matched!")  # Debug password match
                 request.session['user_id'] = user.user_id
                 messages.success(request, 'Logged in successfully!')
-                return redirect('user_list')  # Redirect to the user list page
+                return redirect('dashboard')  # Redirect to the user list page
             else:
                 print("Password mismatch!")  # Debug password mismatch
                 messages.error(request, 'Invalid username or password.')
@@ -151,3 +151,29 @@ def shift_delete(request, pk):
     shift.delete()
     messages.success(request, 'Shift deleted successfully!')
     return redirect('shift_list')
+
+def attendance_list(request):
+    search_query = request.GET.get('search', '')  # Get the search query
+    attendance_records = Attendance.objects.filter(
+        user__full_name__icontains=search_query
+    ).order_by('-date')  # Filter attendance records by user name
+    paginator = Paginator(attendance_records, 10)  # Paginate attendance records
+    page = request.GET.get('page')
+    attendance_records = paginator.get_page(page)
+
+    return render(request, 'attendance/attendance_list.html', {'attendance_records': attendance_records, 'search_query': search_query})
+
+def attendance_create(request):
+    form = AttendanceForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Attendance record added successfully!')
+            return redirect('attendance_list')
+        else:
+            messages.error(request, 'Failed to add attendance record. Please check the form.')
+    return render(request, 'attendance/attendance_form.html', {'form': form, 'title': 'Add Attendance'})
+
+def attendance_report(request):
+    attendance_records = Attendance.objects.all().order_by('-date')  # Fetch all attendance records
+    return render(request, 'attendance/attendance_report.html', {'attendance_records': attendance_records, 'title': 'Attendance Report'})

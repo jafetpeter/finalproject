@@ -5,6 +5,9 @@ from . import views
 urlpatterns = [
     path('', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
+    
+    path('dashboard/', views.dashboard, name='dashboard'),
+    
     path('users/', views.user_list, name='user_list'),
     path('users/add/', views.user_create, name='add_user'),
     path('users/edit/<int:pk>/', views.user_update, name='edit_user'),
@@ -16,6 +19,9 @@ urlpatterns = [
     path('shifts/edit/<int:pk>/', views.shift_update, name='shift_update'),
     path('shifts/delete/<int:pk>/', views.shift_delete, name='shift_delete'),
     
-    path('dashboard/', views.dashboard, name='dashboard'),
+    path('attendance/', views.attendance_list, name='attendance_list'),
+    path('attendance/add/', views.attendance_create, name='add_attendance'),
+    path('attendance/report/', views.attendance_report, name='attendance_report'),
+    
     
 ]

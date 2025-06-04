@@ -1,0 +1,51 @@
+<!-- filepath: /c:/xampp/htdocs/finalproject/crud/templates/attendance/attendance_list.html -->
+{% extends "layout/base.html" %}
+
+{% block 'title' %} Attendance List {% endblock 'title' %}
+
+{% block 'content' %}
+<div class="flex min-h-screen bg-gray-50 text-sm">
+  {% include "include/sidebar.html" %}
+  <div class="flex-1 p-6 bg-gray-200 transition-all duration-300 sm:ml-64">
+    <h1 class="text-2xl font-semibold text-gray-700 mb-4">Attendance List</h1>
+    <form method="get" class="mb-4">
+      <input type="text" name="search" placeholder="Search by user name" class="border px-4 py-2 rounded-lg" value="{{ search_query }}">
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Search</button>
+    </form>
+    <table class="table-auto w-full bg-white rounded-lg shadow-md">
+      <thead>
+        <tr>
+          <th class="px-4 py-2">User</th>
+          <th class="px-4 py-2">Shift</th>
+          <th class="px-4 py-2">Date</th>
+          <th class="px-4 py-2">Time In</th>
+          <th class="px-4 py-2">Time Out</th>
+          <th class="px-4 py-2">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in attendance_records %}
+        <tr>
+          <td class="border px-4 py-2">{{ record.user.full_name }}</td>
+          <td class="border px-4 py-2">{{ record.shift }}</td>
+          <td class="border px-4 py-2">{{ record.date }}</td>
+          <td class="border px-4 py-2">{{ record.time_in }}</td>
+          <td class="border px-4 py-2">{{ record.time_out }}</td>
+          <td class="border px-4 py-2">{{ record.status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="mt-4">
+      {% if attendance_records.has_previous %}
+      <a href="?page={{ attendance_records.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="px-4 py-2 bg-gray-200 rounded-lg">Previous</a>
+      {% endif %}
+      <span class="px-4 py-2">{{ attendance_records.number }} of {{ attendance_records.paginator.num_pages }}</span>
+      {% if attendance_records.has_next %}
+      <a href="?page={{ attendance_records.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" class="px-4 py-2 bg-gray-200 rounded-lg">Next</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
