@@ -56,9 +56,14 @@
                 {{ form.shift }}
             </div>
 
-            <!-- Submit Button -->
-            <div class="flex items-center justify-end">
+            <div class="flex items-center justify-end space-x-4">
+                <!-- Save Button -->
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Save</button>
+            
+                <!-- Change Password Button -->
+                <a href="{% url 'change_password' user.user_id %}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">
+                    Change Password
+                </a>
             </div>
         </form>
     </div>

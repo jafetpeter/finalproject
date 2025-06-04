@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import logout
 from .models import Users, Shifts
-from .forms import UserForm, ShiftForm
+from .forms import UserForm, ShiftForm, ChangePasswordForm
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -64,7 +64,7 @@ def user_create(request):
     if request.method == 'POST':
         if form.is_valid():
             user = form.save(commit=False)
-            user.password = make_password(user.password)  # Hash the password
+            user.password = make_password(form.cleaned_data['password'])  # Hash the password
             user.save()
             messages.success(request, 'User added successfully!')
             return redirect('user_list')
@@ -89,20 +89,19 @@ def user_update(request, pk):
     return render(request, 'user/edit_user.html', {'form': form, 'title': 'Edit User', 'user': user})  # Use the correct template
 
 def change_password(request, pk):
-    user = get_object_or_404(Users, pk=pk)  # Fetch the user or return 404 if not found
-    if request.method == 'POST':
-        new_password = request.POST.get('password')  # Get the new password from the form
-        confirm_password = request.POST.get('confirm_password')  # Get the confirm password from the form
+    user = get_object_or_404(Users, pk=pk)  # Fetch the user by primary key
+    form = ChangePasswordForm(request.POST or None, instance=user)  # Bind the form to the user instance
 
-        if new_password and confirm_password and new_password == confirm_password:
-            user.password = make_password(new_password)  # Hash the new password
+    if request.method == 'POST':  # Check if the request is a POST (form submission)
+        if form.is_valid():  # Validate the form data
+            user.password = make_password(form.cleaned_data['password'])  # Hash the new password
             user.save()  # Save the updated password to the database
-            messages.success(request, 'Password changed successfully!')
+            messages.success(request, 'Password changed successfully!')  # Display a success message
             return redirect('user_list')  # Redirect to the user list page
         else:
-            messages.error(request, 'Passwords do not match. Please try again.')
+            messages.error(request, 'Failed to change password. Please check the form.')  # Display an error message
 
-    return render(request, 'user/change_password.html', {'user': user})
+    return render(request, 'user/change_password.html', {'form': form, 'title': 'Change Password', 'user': user})  # Use the correct template
 
 def user_delete(request, pk):
     user = get_object_or_404(Users, pk=pk)  # Fetch the user or return 404 if not found

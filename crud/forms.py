@@ -13,7 +13,7 @@ class ShiftForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     confirm_password = forms.CharField(
         widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}),
-        required=False,
+        required=True,
         label="Confirm Password"
     )
 
@@ -31,12 +31,37 @@ class UserForm(forms.ModelForm):
             'password': forms.PasswordInput(attrs={'placeholder': 'Password'}),
         }
 
+class ChangePasswordForm(forms.ModelForm):
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}),
+        required=True,
+        label="Confirm Password"
+    )
+
+    class Meta:
+        model = Users
+        fields = ['password']  # Only include the password field
+        widgets = {
+            'password': forms.PasswordInput(attrs={'placeholder': 'New Password'}),
+        }
+
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
 
-        if password or confirm_password:
-            if password != confirm_password:
-                self.add_error('confirm_password', 'Passwords do not match.')
+        if password != confirm_password:
+            self.add_error('confirm_password', 'Passwords do not match.')
         return cleaned_data
+
+class EditUserForm(forms.ModelForm):
+    shift = forms.ModelChoiceField(
+        queryset=Shifts.objects.all(),
+        required=False,
+        label="Shift",
+        widget=forms.Select(attrs={'class': 'form-select'})  # Render as a dropdown
+    )
+
+    class Meta:
+        model = Users
+        fields = ['full_name', 'gender', 'contact_number', 'email', 'username', 'shift']  # Exclude password fields
