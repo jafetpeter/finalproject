@@ -70,8 +70,25 @@ from .models import Attendance
 class AttendanceForm(forms.ModelForm):
     class Meta:
         model = Attendance
-        fields = ['user', 'shift', 'time_in', 'time_out', 'status']
+        fields = ['user', 'shift', 'date', 'time_in', 'time_out', 'status']  # add 'date'
         widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
             'time_in': forms.TimeInput(attrs={'type': 'time'}),
-            'time_out': forms.TimeInput(attrs={'type': 'time'}), 
+            'time_out': forms.TimeInput(attrs={'type': 'time'}),
         }
+    def clean(self):
+        cleaned_data = super().clean()
+        time_in = cleaned_data.get('time_in')
+        time_out = cleaned_data.get('time_out')
+        user = cleaned_data.get('user')
+        date = cleaned_data.get('date')
+
+        if time_in and time_out and time_out <= time_in:
+            self.add_error('time_out', 'Time out must be after time in.')
+
+        if user and date:
+            # Check if attendance record already exists for this user and date
+            if Attendance.objects.filter(user=user, date=date).exists():
+                self.add_error('date', 'Attendance record for this user and date already exists.')
+
+        return cleaned_data

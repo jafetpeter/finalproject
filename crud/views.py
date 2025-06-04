@@ -167,12 +167,16 @@ def attendance_create(request):
     form = AttendanceForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
+            attendance = form.save(commit=False)
+            if not attendance.shift:
+                attendance.shift = attendance.user.shift
+            attendance.save()
             messages.success(request, 'Attendance record added successfully!')
             return redirect('attendance_list')
         else:
             messages.error(request, 'Failed to add attendance record. Please check the form.')
     return render(request, 'attendance/attendance_form.html', {'form': form, 'title': 'Add Attendance'})
+
 
 def attendance_report(request):
     attendance_records = Attendance.objects.all().order_by('-date')  # Fetch all attendance records

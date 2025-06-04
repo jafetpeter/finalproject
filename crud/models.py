@@ -49,7 +49,7 @@ class Attendance(models.Model):
     attendance_id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)  # Link attendance to a user
     shift = models.ForeignKey(Shifts, on_delete=models.SET_NULL, null=True, blank=True)  # Link attendance to a shift
-    date = models.DateField(auto_now_add=True)  # Date of attendance
+    date = models.DateField() # Date of attendance
     time_in = models.TimeField(blank=True, null=True)  # Time the user clocked in
     time_out = models.TimeField(blank=True, null=True)  # Time the user clocked out
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Present')  # Attendance status

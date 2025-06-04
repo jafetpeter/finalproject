@@ -1,0 +1,84 @@
+{% extends "layout/base.html" %}
+
+{% block 'title' %} {{ title }} {% endblock 'title' %}
+
+{% block 'content' %}
+<div class="flex min-h-screen bg-gray-50 text-sm">
+  {% include "include/sidebar.html" %}
+  <div class="flex-1 p-6 bg-gray-200 transition-all duration-300 sm:ml-64" style="margin-top: 64px;">
+    <!-- Back Button -->
+    <a href="{% url 'attendance_list' %}" class="inline-flex items-center text-gray-700 hover:text-gray-900 mb-6">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-700 hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      <span class="text-sm font-medium">Back to Attendance List</span>
+    </a>
+
+    <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-semibold text-gray-700 mb-4">{{ title }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- User -->
+            <div class="mb-4">
+                <label for="id_user" class="block text-sm font-medium text-gray-700">User</label>
+                {{ form.user }}
+                {% for error in form.user.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Shift -->
+            <div class="mb-4">
+                <label for="id_shift" class="block text-sm font-medium text-gray-700">Shift</label>
+                {{ form.shift }}
+                {% for error in form.shift.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Date -->
+            <div class="mb-4">
+            <label for="id_date" class="block text-sm font-medium text-gray-700">Date</label>
+            {{ form.date }}
+            {% for error in form.date.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+            {% endfor %}
+            </div>
+
+            <!-- Time In -->
+            <div class="mb-4">
+                <label for="id_time_in" class="block text-sm font-medium text-gray-700">Time In</label>
+                {{ form.time_in }}
+                {% for error in form.time_in.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Time Out -->
+            <div class="mb-4">
+                <label for="id_time_out" class="block text-sm font-medium text-gray-700">Time Out</label>
+                {{ form.time_out }}
+                {% for error in form.time_out.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Status -->
+            <div class="mb-4">
+                <label for="id_status" class="block text-sm font-medium text-gray-700">Status</label>
+                {{ form.status }}
+                {% for error in form.status.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex items-center justify-end">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Save</button>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
