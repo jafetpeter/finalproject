@@ -7,15 +7,27 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-red-100: oklch(93.6% 0.032 17.717);
     --color-red-200: oklch(88.5% 0.062 18.334);
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-600: oklch(57.7% 0.245 27.325);
     --color-green-500: oklch(72.3% 0.219 149.579);
+    --color-green-600: oklch(62.7% 0.194 149.214);
+    --color-green-700: oklch(52.7% 0.154 150.069);
+    --color-sky-400: oklch(74.6% 0.16 232.661);
+    --color-sky-700: oklch(50% 0.134 242.749);
+    --color-sky-800: oklch(44.3% 0.11 240.79);
+    --color-sky-900: oklch(39.1% 0.09 240.876);
     --color-blue-100: oklch(93.2% 0.032 255.585);
     --color-blue-200: oklch(88.2% 0.059 254.128);
+    --color-blue-400: oklch(70.7% 0.165 254.624);
     --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-blue-600: oklch(54.6% 0.245 262.881);
     --color-blue-700: oklch(48.8% 0.243 264.376);
+    --color-blue-800: oklch(42.4% 0.199 265.638);
+    --color-blue-900: oklch(37.9% 0.146 265.522);
+    --color-slate-100: oklch(96.8% 0.007 247.896);
+    --color-slate-200: oklch(92.9% 0.013 255.508);
     --color-gray-50: oklch(98.5% 0.002 247.839);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
@@ -34,7 +46,6 @@
     --container-xs: 20rem;
     --container-md: 28rem;
     --container-xl: 36rem;
-    --container-4xl: 56rem;
     --text-sm: 0.875rem;
     --text-sm--line-height: calc(1.25 / 0.875);
     --text-xl: 1.25rem;
@@ -225,6 +236,9 @@
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
+  .top-4 {
+    top: calc(var(--spacing) * 4);
+  }
   .top-5 {
     top: calc(var(--spacing) * 5);
   }
@@ -233,6 +247,9 @@
   }
   .left-0 {
     left: calc(var(--spacing) * 0);
+  }
+  .left-4 {
+    left: calc(var(--spacing) * 4);
   }
   .z-40 {
     z-index: 40;
@@ -319,6 +336,9 @@
   .h-full {
     height: 100%;
   }
+  .h-screen {
+    height: 100vh;
+  }
   .min-h-screen {
     min-height: 100vh;
   }
@@ -340,9 +360,6 @@
   .w-full {
     width: 100%;
   }
-  .max-w-4xl {
-    max-width: var(--container-4xl);
-  }
   .max-w-md {
     max-width: var(--container-md);
   }
@@ -363,9 +380,6 @@
   }
   .flex-grow {
     flex-grow: 1;
-  }
-  .table-auto {
-    table-layout: auto;
   }
   .border-collapse {
     border-collapse: collapse;
@@ -425,6 +439,9 @@
   .overflow-x-auto {
     overflow-x: auto;
   }
+  .overflow-y-auto {
+    overflow-y: auto;
+  }
   .rounded {
     border-radius: 0.25rem;
   }
@@ -462,14 +479,23 @@
   .border-gray-300 {
     border-color: var(--color-gray-300);
   }
+  .border-gray-700 {
+    border-color: var(--color-gray-700);
+  }
   .bg-blue-100 {
     background-color: var(--color-blue-100);
+  }
+  .bg-blue-400 {
+    background-color: var(--color-blue-400);
   }
   .bg-blue-500 {
     background-color: var(--color-blue-500);
   }
   .bg-blue-600 {
     background-color: var(--color-blue-600);
+  }
+  .bg-blue-900 {
+    background-color: var(--color-blue-900);
   }
   .bg-gray-50 {
     background-color: var(--color-gray-50);
@@ -480,14 +506,44 @@
   .bg-gray-200 {
     background-color: var(--color-gray-200);
   }
+  .bg-gray-500 {
+    background-color: var(--color-gray-500);
+  }
+  .bg-gray-700 {
+    background-color: var(--color-gray-700);
+  }
+  .bg-gray-800 {
+    background-color: var(--color-gray-800);
+  }
   .bg-gray-900 {
     background-color: var(--color-gray-900);
+  }
+  .bg-red-100 {
+    background-color: var(--color-red-100);
   }
   .bg-red-200 {
     background-color: var(--color-red-200);
   }
   .bg-red-500 {
     background-color: var(--color-red-500);
+  }
+  .bg-sky-400 {
+    background-color: var(--color-sky-400);
+  }
+  .bg-sky-700 {
+    background-color: var(--color-sky-700);
+  }
+  .bg-sky-800 {
+    background-color: var(--color-sky-800);
+  }
+  .bg-sky-900 {
+    background-color: var(--color-sky-900);
+  }
+  .bg-slate-100 {
+    background-color: var(--color-slate-100);
+  }
+  .bg-slate-200 {
+    background-color: var(--color-slate-200);
   }
   .bg-white {
     background-color: var(--color-white);
@@ -564,6 +620,9 @@
   .text-blue-600 {
     color: var(--color-blue-600);
   }
+  .text-gray-100 {
+    color: var(--color-gray-100);
+  }
   .text-gray-400 {
     color: var(--color-gray-400);
   }
@@ -638,13 +697,6 @@
     --tw-duration: 300ms;
     transition-duration: 300ms;
   }
-  .hover\:bg-blue-200 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-blue-200);
-      }
-    }
-  }
   .hover\:bg-blue-600 {
     &:hover {
       @media (hover: hover) {
@@ -656,6 +708,13 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-blue-700);
+      }
+    }
+  }
+  .hover\:bg-blue-800 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-blue-800);
       }
     }
   }
@@ -680,17 +739,31 @@
       }
     }
   }
+  .hover\:bg-gray-600 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-600);
+      }
+    }
+  }
+  .hover\:bg-gray-700 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-700);
+      }
+    }
+  }
+  .hover\:bg-red-200 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-red-200);
+      }
+    }
+  }
   .hover\:bg-red-600 {
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-red-600);
-      }
-    }
-  }
-  .hover\:text-blue-600 {
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-blue-600);
       }
     }
   }
@@ -740,6 +813,11 @@
       --tw-ring-color: var(--color-blue-600);
     }
   }
+  .focus\:ring-blue-800 {
+    &:focus {
+      --tw-ring-color: var(--color-blue-800);
+    }
+  }
   .focus\:ring-gray-200 {
     &:focus {
       --tw-ring-color: var(--color-gray-200);
@@ -748,6 +826,16 @@
   .focus\:ring-gray-300 {
     &:focus {
       --tw-ring-color: var(--color-gray-300);
+    }
+  }
+  .focus\:ring-gray-600 {
+    &:focus {
+      --tw-ring-color: var(--color-gray-600);
+    }
+  }
+  .focus\:ring-gray-700 {
+    &:focus {
+      --tw-ring-color: var(--color-gray-700);
     }
   }
   .focus\:outline-none {

@@ -7,6 +7,14 @@
 <div class="flex min-h-screen bg-gray-50 text-sm">
   {% include "include/sidebar.html" %}
   <div class="flex-1 p-6 bg-gray-200 transition-all duration-300 sm:ml-64" style="margin-top: 64px;">
+    <!-- Back Button -->
+    <a href="{% url 'shift_list' %}" class="inline-flex items-center text-gray-700 hover:text-gray-900 mb-6">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-700 hover:text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      <span class="text-sm font-medium">Back to Shift List</span>
+    </a>
+
     <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <h1 class="text-2xl font-semibold text-gray-700 mb-4">{{ title }}</h1>
         <form method="post">
