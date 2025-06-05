@@ -43,7 +43,7 @@ Users List
             {% for user in users %}
             <tr class="border-b border-gray-200 hover:bg-gray-50">
                 <td class="px-6 py-4 text-left">{{ forloop.counter }}</td>
-                <td class="px-6 py-4 text-left">{{ user.full_name }}</td>
+                <td class="px-6 py-3 text-left font-medium tracking-wider">{{ user.full_name }}</td>
                 <td class="px-6 py-4 text-left">
                   {% if user.shift %}
                       {{ user.shift.time_in }} - {{ user.shift.time_out }}

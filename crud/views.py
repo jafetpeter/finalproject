@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth import logout
+from django.contrib.auth import logout, get_user_model
 from .models import Users, Shifts, Attendance
 from .forms import UserForm, ShiftForm, ChangePasswordForm, EditUserForm, AttendanceForm
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.paginator import Paginator
 from django.db.models import Q
+from datetime import datetime
+from django.utils import timezone
+
+
 
 def dashboard(request):
     return render(request, 'dashboard/dashboard.html')
@@ -178,6 +182,32 @@ def attendance_create(request):
     return render(request, 'attendance/attendance_form.html', {'form': form, 'title': 'Add Attendance'})
 
 
+User = get_user_model()
+
 def attendance_report(request):
-    attendance_records = Attendance.objects.all().order_by('-date')  # Fetch all attendance records
-    return render(request, 'attendance/attendance_report.html', {'attendance_records': attendance_records, 'title': 'Attendance Report'})
+    month = request.GET.get('month')
+    user_id = request.GET.get('user')  # user filter from query params
+
+    attendance_records = Attendance.objects.all()
+
+    if month:
+        try:
+            year, month_num = map(int, month.split('-'))
+            attendance_records = attendance_records.filter(date__year=year, date__month=month_num)
+        except ValueError:
+            messages.error(request, "Invalid month format.")
+
+    if user_id:
+        attendance_records = attendance_records.filter(user__user_id=user_id)
+
+    attendance_records = attendance_records.order_by('-date')
+
+    users = Users.objects.all()
+
+    return render(request, 'attendance/attendance_report.html', {
+        'attendance_records': attendance_records,
+        'selected_month': month,
+        'selected_user_id': user_id,
+        'users': users,
+        'title': 'Attendance Report',
+    })

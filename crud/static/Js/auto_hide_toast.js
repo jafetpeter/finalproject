@@ -3,6 +3,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (toastContainer) {
         setTimeout(() => {
             toastContainer.style.display = 'none';
-        }, 3000); // Auto-dismiss after 3 seconds
+        }, 3000); 
     }
 });
