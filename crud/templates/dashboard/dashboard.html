@@ -7,16 +7,15 @@ Dashboard
 {% block 'content' %}
 
 <div class="flex min-h-screen bg-gray-50 text-sm">
-  <!-- Include Sidebar -->
   {% include "include/sidebar.html" %}
 
-  <!-- Main Content -->
   <div class="flex-1 p-8 bg-gray-100 transition-all duration-300 sm:ml-64">
     <div class="space-y-8">
+
       <!-- Header -->
       <div class="flex items-center justify-between">
         <h1 class="text-3xl font-semibold text-gray-800">Dashboard</h1>
-        <button class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700">
+        <button onclick="location.reload()" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700">
           Refresh Data
         </button>
       </div>
@@ -25,15 +24,15 @@ Dashboard
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="p-6 bg-white rounded-lg shadow-md">
           <h2 class="text-sm font-medium text-gray-600">Total Shifts</h2>
-          <p class="mt-2 text-4xl font-bold text-gray-800">3</p>
+          <p class="mt-2 text-4xl font-bold text-gray-800">{{ total_shifts }}</p>
         </div>
         <div class="p-6 bg-white rounded-lg shadow-md">
-          <h2 class="text-sm font-medium text-gray-600">Active Employees</h2>
-          <p class="mt-2 text-4xl font-bold text-gray-800">5</p>
+          <h2 class="text-sm font-medium text-gray-600">Total Users</h2>
+          <p class="mt-2 text-4xl font-bold text-gray-800">{{ total_users }}</p>
         </div>
         <div class="p-6 bg-white rounded-lg shadow-md">
-          <h2 class="text-sm font-medium text-gray-600">Pending Leave Requests</h2>
-          <p class="mt-2 text-4xl font-bold text-gray-800">4</p>
+          <h2 class="text-sm font-medium text-gray-600">Total Attendance</h2>
+          <p class="mt-2 text-4xl font-bold text-gray-800">{{ total_attendance }}</p>
         </div>
       </div>
 
@@ -41,39 +40,78 @@ Dashboard
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div class="p-6 bg-white rounded-lg shadow-md">
           <h2 class="text-sm font-medium text-gray-600">Average Shift Duration</h2>
-          <p class="mt-2 text-4xl font-bold text-gray-800">8 hrs</p>
+          <p class="mt-2 text-4xl font-bold text-gray-800">{{ average_shift_duration }} hrs</p>
         </div>
         <div class="p-6 bg-white rounded-lg shadow-md">
-          <h2 class="text-sm font-medium text-gray-600">Attendance Rate</h2>
-          <p class="mt-2 text-4xl font-bold text-gray-800">95%</p>
+          <h2 class="text-sm font-medium text-gray-600">Attendance This Week</h2>
+          <p class="mt-2 text-4xl font-bold text-gray-800">{{ weekly_attendance }}</p>
         </div>
         <div class="p-6 bg-white rounded-lg shadow-md">
-          <h2 class="text-sm font-medium text-gray-600">Leave Approval Rate</h2>
-          <p class="mt-2 text-4xl font-bold text-gray-800">85%</p>
+          <h2 class="text-sm font-medium text-gray-600">Most Active User</h2>
+          <p class="mt-2 text-xl font-bold text-gray-800">{{ most_active_user }}</p>
         </div>
       </div>
+
 
       <!-- Recent Activity Section -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="p-6 bg-white rounded-lg shadow-md">
           <h2 class="text-lg font-semibold text-gray-800">Recent Shifts</h2>
           <ul class="mt-4 space-y-2 text-gray-600">
-            <li>Shift 1: 9:00 AM - 5:00 PM</li>
-            <li>Shift 2: 10:00 AM - 6:00 PM</li>
-            <li>Shift 3: 11:00 AM - 7:00 PM</li>
+            {% for shift in recent_shifts %}
+              <li>{{ shift.time_in|time:"H:i" }} - {{ shift.time_out|time:"H:i" }}</li>
+            {% empty %}
+              <li>No recent shifts</li>
+            {% endfor %}
           </ul>
         </div>
         <div class="p-6 bg-white rounded-lg shadow-md">
           <h2 class="text-lg font-semibold text-gray-800">Notifications</h2>
           <ul class="mt-4 space-y-2 text-gray-600">
-            <li>Leave request from John Doe</li>
-            <li>Shift update for Jane Smith</li>
-            <li>New employee added: Alice Johnson</li>
+            {% for user in recent_users %}
+              <li>New employee added: {{ user.full_name }}</li>
+            {% empty %}
+              <li>No new users</li>
+            {% endfor %}
           </ul>
         </div>
       </div>
+
+      <!-- Attendance Chart -->
+      <div class="p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Attendance Last 6 Months</h2>
+        <canvas id="attendanceChart" height="100"></canvas>
+      </div>
+
     </div>
   </div>
 </div>
+
+<!-- Chart.js CDN and chart script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('attendanceChart').getContext('2d');
+  const attendanceChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: {{ chart_labels|safe }},
+      datasets: [{
+        label: 'Attendance Count',
+        data: {{ chart_data|safe }},
+        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+        borderColor: 'rgba(59, 130, 246, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { precision: 0 }
+        }
+      }
+    }
+  });
+</script>
 
 {% endblock 'content' %}

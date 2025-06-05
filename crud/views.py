@@ -1,13 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, render
 from django.contrib import messages
 from django.contrib.auth import logout, get_user_model
 from .models import Users, Shifts, Attendance
 from .forms import UserForm, ShiftForm, ChangePasswordForm, EditUserForm, AttendanceForm
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.paginator import Paginator
-from django.db.models import Q
-from datetime import datetime
+from django.db.models import Q, Count
+from datetime import datetime, timedelta
 from django.utils import timezone
+from django.db.models.functions import TruncMonth
 
 
 
@@ -46,6 +47,69 @@ def user_logout(request):
     logout(request)  # Logs out the user
     messages.success(request, 'Logged out successfully!')
     return redirect('login')  # Redirect to the login page
+
+
+def dashboard(request):
+    total_shifts = Shifts.objects.count()
+    total_users = Users.objects.count()
+    total_attendance = Attendance.objects.count()
+
+    shifts = Shifts.objects.all()
+    total_duration = timedelta()
+    for shift in shifts:
+        dt_in = datetime.combine(datetime.today(), shift.time_in)
+        dt_out = datetime.combine(datetime.today(), shift.time_out)
+        duration = dt_out - dt_in
+        total_duration += duration
+
+    average_duration_hours = 0
+    if shifts.exists():
+        average_duration_hours = total_duration.total_seconds() / 3600 / shifts.count()
+
+    # Weekly attendance
+    seven_days_ago = timezone.now() - timedelta(days=7)
+    weekly_attendance = Attendance.objects.filter(date__gte=seven_days_ago).count()
+
+    # Most active user
+    most_active = (
+        Attendance.objects
+        .values('user__full_name')
+        .annotate(attendance_count=Count('attendance_id'))
+        .order_by('-attendance_count')
+        .first()
+    )
+    most_active_user = most_active['user__full_name'] if most_active else "N/A"
+
+    recent_shifts = Shifts.objects.order_by('-created_at')[:3]
+    recent_users = Users.objects.order_by('-created_at')[:3]
+
+    # Attendance by month (chart)
+    six_months_ago = timezone.now() - timedelta(days=180)
+    attendance_by_month = (
+        Attendance.objects.filter(date__gte=six_months_ago)
+        .annotate(month=TruncMonth('date'))
+        .values('month')
+        .annotate(count=Count('attendance_id'))
+        .order_by('month')
+    )
+    chart_labels = [entry['month'].strftime('%b %Y') for entry in attendance_by_month]
+    chart_data = [entry['count'] for entry in attendance_by_month]
+
+    context = {
+        'total_shifts': total_shifts,
+        'total_users': total_users,
+        'total_attendance': total_attendance,
+        'average_shift_duration': round(average_duration_hours, 2),
+        'weekly_attendance': weekly_attendance,
+        'most_active_user': most_active_user,
+        'recent_shifts': recent_shifts,
+        'recent_users': recent_users,
+        'chart_labels': chart_labels,
+        'chart_data': chart_data,
+    }
+
+    return render(request, 'dashboard/dashboard.html', context)
+
 
 
 def user_list(request):
@@ -186,7 +250,7 @@ User = get_user_model()
 
 def attendance_report(request):
     month = request.GET.get('month')
-    user_id = request.GET.get('user')  # user filter from query params
+    user_id = request.GET.get('user')
 
     attendance_records = Attendance.objects.all()
 
@@ -202,10 +266,15 @@ def attendance_report(request):
 
     attendance_records = attendance_records.order_by('-date')
 
+    # Add pagination
+    paginator = Paginator(attendance_records, 10)  # 10 records per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     users = Users.objects.all()
 
     return render(request, 'attendance/attendance_report.html', {
-        'attendance_records': attendance_records,
+        'page_obj': page_obj,
         'selected_month': month,
         'selected_user_id': user_id,
         'users': users,
