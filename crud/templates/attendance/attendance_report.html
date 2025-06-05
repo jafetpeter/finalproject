@@ -67,35 +67,34 @@
       </tbody>
     </table>
     
-    <div class="mt-4">
-      <nav class="flex justify-between items-center">
-        {% if attendance_records.has_previous %}
-          <a href="?page={{ attendance_records.previous_page_number }}{% if selected_month %}&month={{ selected_month }}{% endif %}{% if selected_user_id %}&user={{ selected_user_id }}{% endif %}"
-             class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-sm">
-            &laquo; Previous
-          </a>
-        {% else %}
-          <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded text-sm cursor-not-allowed">
-            &laquo; Previous
-          </span>
-        {% endif %}
-    
-        <span class="text-sm text-gray-700">
-          Page {{ attendance_records.number }} of {{ attendance_records.paginator.num_pages }}
+    <div class="mt-6 flex justify-between items-center">
+      {% if attendance_records.has_previous %}
+        <a href="?page={{ attendance_records.previous_page_number }}{% if selected_month %}&month={{ selected_month }}{% endif %}{% if selected_user_id %}&user={{ selected_user_id }}{% endif %}"
+           class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-100 shadow-sm transition">
+          &laquo; Previous
+        </a>
+      {% else %}
+        <span class="px-4 py-2 bg-gray-100 border border-gray-200 text-gray-400 rounded cursor-not-allowed shadow-sm">
+          &laquo; Previous
         </span>
+      {% endif %}
     
-        {% if attendance_records.has_next %}
-          <a href="?page={{ attendance_records.next_page_number }}{% if selected_month %}&month={{ selected_month }}{% endif %}{% if selected_user_id %}&user={{ selected_user_id }}{% endif %}"
-             class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-sm">
-            Next &raquo;
-          </a>
-        {% else %}
-          <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded text-sm cursor-not-allowed">
-            Next &raquo;
-          </span>
-        {% endif %}
-      </nav>
+      <span class="text-sm text-gray-700">
+        Page <strong>{{ attendance_records.number }}</strong> of {{ attendance_records.paginator.num_pages }}
+      </span>
+    
+      {% if attendance_records.has_next %}
+        <a href="?page={{ attendance_records.next_page_number }}{% if selected_month %}&month={{ selected_month }}{% endif %}{% if selected_user_id %}&user={{ selected_user_id }}{% endif %}"
+           class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-100 shadow-sm transition">
+          Next &raquo;
+        </a>
+      {% else %}
+        <span class="px-4 py-2 bg-gray-100 border border-gray-200 text-gray-400 rounded cursor-not-allowed shadow-sm">
+          Next &raquo;
+        </span>
+      {% endif %}
     </div>
+    
     
     <!-- Pagination -->
     {% if page_obj.has_other_pages %}
